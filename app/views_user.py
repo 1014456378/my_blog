@@ -1,6 +1,9 @@
+import functools
 import random
 from flask import Blueprint, jsonify
+from flask import g
 from flask import make_response
+from flask import redirect
 from flask import render_template
 from flask import request
 from flask import session
@@ -78,6 +81,66 @@ def login():
         return jsonify(result = 0,pic = pic,name=name)#登陆成功
     else:
         return jsonify(result = 2)#登录失败
+
+def yanzheng(fun):
+    @functools.wraps(fun)
+    def fun1(*args,**kwargs):
+        if 'user_id' in session:
+            g.user = User.query.get(session['user_id'])
+        else:
+            return redirect('/')
+        return fun(*args,**kwargs)
+    return fun1
+
+
+@user_blueprint.route('/')
+@yanzheng
+def user():
+    return render_template('/news/user.html',title='用户中心')
+
+@user_blueprint.route('/user_base_info',methods=['GET','POST'])
+@yanzheng
+def user_base_info():
+    if request.method=='GET':
+        return render_template('/news/user_base_info.html')
+    name = request.form.get('name')
+    if not name:
+        return jsonify(result=1)
+    g.user.name = name
+    db.session.commit()
+    return jsonify(result=0)
+
+
+@user_blueprint.route('/user_pic_info')
+def user_pic_info():
+    return render_template('/news/user_pic_info.html')
+
+@user_blueprint.route('/user_pass_info')
+def user_pass_info():
+    return render_template('/user/user_pass_info.html')
+
+@user_blueprint.route('/user_pass_release', methods=['POST'])
+def user_pass_release():
+    pass
+
+@user_blueprint.route('/user_collection')
+def user_collection():
+    render_template('/user/user_collection.html')
+    
+@user_blueprint.route('/user_news_list')
+def user_news_list():
+    render_template('/user/user_news_list.html')
+
+@user_blueprint.route('/user_news_edit')
+def user_news_edit():
+    render_template('/user/user_news_edit.html')
+
+@user_blueprint.route('/user_news_release')
+def user_news_release():
+    render_template('/user/user_news_edit.html')
+
+
+
 
 
 

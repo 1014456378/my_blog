@@ -21,6 +21,7 @@ class User(db.Model,BaseModel):
     pwd_hash = db.Column(db.String(200))
     #用户头像
     pic = db.Column(db.String(50),default='facicon.ico')
+    isMaster = db.Column(db.Boolean,default=False)
     #用户评论关系
     talk = db.relationship('Talk', backref='whotalk', lazy='dynamic')
     #用户收藏关系

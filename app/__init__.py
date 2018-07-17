@@ -2,6 +2,8 @@ from flask import Flask
 from app.models import db
 from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
+
+from app.views_detail import detail_blueprint
 from app.views_index import index_blueprint
 import redis
 
@@ -18,5 +20,6 @@ def create_app(config):
 
     app.register_blueprint(index_blueprint)
     app.register_blueprint(user_blueprint)
+    app.register_blueprint(detail_blueprint)
     return app
 

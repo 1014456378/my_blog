@@ -196,6 +196,29 @@ function generateImageCode() {
     $('.get_pic_code').attr('src',$('.get_pic_code').attr('src')+'1');
 }
 
+function logout() {
+    $.post('/logout',{
+        'csrf_token':$('#csrf_token').val()
+    },function (data) {
+        if(data.result==0){
+            // 如果当前在用户中心页面，转到主页
+            if (location.pathname=='/user/'){
+                location.href = '/';
+            }
+            else{
+                if(/^\/\d+$/.test(location.pathname)){
+                    $('.comment_form').hide();
+                    $('.comment_form_logout').show();
+                    $('.collection').show();
+                    $('.collected').hide()
+                }
+            $('.user_btns').show();
+            $('.user_login').hide();
+        }}
+    })
+}
+
+
 // 发送短信验证码
 function sendSMSCode() {
     // 校验参数，保证输入框有数据填写
