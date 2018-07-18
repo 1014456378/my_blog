@@ -10,6 +10,7 @@ from flask import session
 from flask_mail import Message, Mail
 from app import models
 from app.models import db, User
+from app.utils import qiniu_upload
 from app.utils.captcha.captcha import captcha
 mail = Mail()
 user_blueprint = Blueprint('user_b',__name__,url_prefix='/user')
@@ -111,33 +112,62 @@ def user_base_info():
     return jsonify(result=0)
 
 
-@user_blueprint.route('/user_pic_info')
+@user_blueprint.route('/user_pic_info',methods=['GET','POST'])
+@yanzheng
 def user_pic_info():
-    return render_template('/news/user_pic_info.html')
+    user=g.user
+    if request.method=='GET':
+        return render_template('/news/user_pic_info.html')
+    pic = request.files.get('pic')
+    print(pic)
+    if not pic:
+        return jsonify(result=1)
+    pic_name = qiniu_upload.upload(pic)
+    user.pic=pic_name
+    db.session.commit()
+    return jsonify(result=0,pic=user.pic_url)
 
-@user_blueprint.route('/user_pass_info')
+@user_blueprint.route('/user_pass_info',methods=['GET','POST'])
+@yanzheng
 def user_pass_info():
-    return render_template('/user/user_pass_info.html')
-
-@user_blueprint.route('/user_pass_release', methods=['POST'])
-def user_pass_release():
-    pass
+    if request.method=='GET':
+        return render_template('/news/user_pass_info.html')
+    old_pass = request.form.get('old_pass')
+    new_pass1 = request.form.get('new_pass2')
+    new_pass2 = request.form.get('new_pass2')
+    if not all([old_pass,new_pass1,new_pass2]):
+        return jsonify(result=1)
+    user = g.user
+    pass_yanzheng = user.check_pwd(old_pass)
+    if not pass_yanzheng:
+        return jsonify(result=2)
+    if new_pass1 != new_pass2:
+        return jsonify(result=3)
+    user.password = new_pass1
+    db.session.commit()
+    return jsonify(result=0)
 
 @user_blueprint.route('/user_collection')
+@yanzheng
 def user_collection():
-    render_template('/user/user_collection.html')
+    user = g.user
+    page = int(request.args.get('page','1'))
+    pagination = user.collect.paginate(page,6,False)
+    total_page = pagination.pages
+    user_collection_list = pagination.items
+    return render_template('/news/user_collection.html',page=page,total_page=total_page,col_list = user_collection_list)
     
 @user_blueprint.route('/user_news_list')
 def user_news_list():
-    render_template('/user/user_news_list.html')
+    return render_template('/news/user_news_list.html')
 
 @user_blueprint.route('/user_news_edit')
 def user_news_edit():
-    render_template('/user/user_news_edit.html')
+    return render_template('/news/user_news_edit.html')
 
 @user_blueprint.route('/user_news_release')
 def user_news_release():
-    render_template('/user/user_news_edit.html')
+    return render_template('/news/user_news_edit.html')
 
 
 

@@ -20,7 +20,7 @@ class User(db.Model,BaseModel):
     #用户密码hash码
     pwd_hash = db.Column(db.String(200))
     #用户头像
-    pic = db.Column(db.String(50),default='facicon.ico')
+    pic = db.Column(db.String(50),default='FqpDiGx81qkUNINriHHL9TqHADho')
     isMaster = db.Column(db.Boolean,default=False)
     #用户评论关系
     talk = db.relationship('Talk', backref='whotalk', lazy='dynamic')
@@ -34,7 +34,9 @@ class User(db.Model,BaseModel):
         self.pwd_hash = generate_password_hash(pwd)
     def check_pwd(self, pwd):
         return check_password_hash(self.pwd_hash, pwd)
-
+    @property
+    def pic_url(self):
+        return 'http://oyvzbpqij.bkt.clouddn.com/' + self.pic
 
 
 class Talk(db.Model,BaseModel):

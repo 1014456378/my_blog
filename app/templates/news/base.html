@@ -24,7 +24,7 @@
 
             <!-- 用户登录后显示下面，隐藏上面 -->
             <div class="user_login fr"{%if g.user%} style="display:block"{%else%}style="display:none" {%endif%}>
-                <img src="{{g.user.pic}}" class="lgin_pic">
+                <img src="{{g.user.pic_url}}" class="lgin_pic">
                 <a href="/user" id="name" >{{g.user.name}}</a>
                 <a href="javascript:;" onclick="logout()">退出</a>
             </div>
