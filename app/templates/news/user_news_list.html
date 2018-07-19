@@ -13,22 +13,9 @@
     <div class="news_list">
         <h3>新闻列表</h3>
         <ul class="article_list">
-            <li><a href="user_news_release.html">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a><em class="pass">已通过</em><span>2018-1-17</span></li>
-            <li><a href="#">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a><em class="pass">已通过</em><span>2018-1-17</span></li>
-            <li><a href="#">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a><em class="review">审核中</em><span>2018-1-17</span></li>
-            <li><a href="#">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a><em class="review">审核中</em><span>2018-1-17</span></li>
-            <li>
-                <a href="#">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a>
-                <em class="nopass">未通过</em>
-                <span>2018-1-17</span>
-                <b>未通过原因：因为写的太boring,因为写的太boring,因为写的太boring,因为写的太boring,</b>
-            </li>
-            <li>
-                <a href="#">智能音箱“不智能”：这次轮到三星语音助手Bixby被吐槽了</a>
-                <em class="nopass">未通过</em>
-                <span>2018-1-17</span>
-                <b>未通过原因：因为写的太煽情,因为写的太煽情,因为写的太煽情,因为写的太煽情,</b>
-            </li>
+            {% for art in art_list %}
+            <li><a href="/user/user_news_release?title={{ art.title }}">{{ art.title }}</a><span>{{ art.time }}</span></li>
+            {% endfor %}
         </ul>
         <div id="pagination" class="page"></div>
         <script>
@@ -37,15 +24,21 @@
 
             $(function(){
                 $("#pagination").pagination({
-                    currentPage: 2,
-                    totalPage: 3,
+                    currentPage: {{ page }},
+                    totalPage: {{ total_page }},
                     callback: function(current) {
-                        alert('ok!');
+                        location.href='?page='+current
                     }
                 });
             });
         </script>
        
     </div>
+<script>
+    $(function(){
+        var $li = $('.option_list li', window.parent.document);
+        $li.eq(5).addClass('active').siblings().removeClass('active');
+    })
+</script>
 </body>
 </html>

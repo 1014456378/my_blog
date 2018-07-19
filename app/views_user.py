@@ -1,5 +1,7 @@
 import functools
 import random
+from datetime import datetime
+
 from flask import Blueprint, jsonify
 from flask import g
 from flask import make_response
@@ -9,7 +11,7 @@ from flask import request
 from flask import session
 from flask_mail import Message, Mail
 from app import models
-from app.models import db, User
+from app.models import db, User, Article
 from app.utils import qiniu_upload
 from app.utils.captcha.captcha import captcha
 mail = Mail()
@@ -159,16 +161,41 @@ def user_collection():
     
 @user_blueprint.route('/user_news_list')
 def user_news_list():
-    return render_template('/news/user_news_list.html')
+    page = int(request.args.get('page',1))
+    art = Article.query.order_by(Article.time.desc())
+    pagination = art.paginate(page,5,False)
+    total_page = pagination.pages
+    art_list = pagination.items
 
-@user_blueprint.route('/user_news_edit')
+    return render_template('/news/user_news_list.html',total_page=total_page,art_list=art_list,page=page)
+
+@user_blueprint.route('/user_news_edit',methods=['GET','POST'])
 def user_news_edit():
-    return render_template('/news/user_news_edit.html')
-
-@user_blueprint.route('/user_news_release')
+    if request.method=='GET':
+        return render_template('/news/user_news_edit.html')
+    title = request.form.get('title')
+    content = request.form.get('content')
+    art = Article()
+    art.title = title
+    art.content = content
+    db.session.add(art)
+    db.session.commit()
+    return redirect('/user/user_news_list')
+@user_blueprint.route('/user_news_release',methods=['GET','POST'])
 def user_news_release():
-    return render_template('/news/user_news_edit.html')
-
+    if request.method=='GET':
+        title = request.args.get('title')
+        art = Article.query.filter_by(title = title).first()
+        return render_template('/news/user_news_release.html',art = art)
+    title = request.form.get('title')
+    content = request.form.get('content')
+    id = request.form.get('id')
+    art = Article.query.get(id)
+    art.title = title
+    art.content = content
+    art.time = datetime.now()
+    db.session.commit()
+    return redirect('/user/user_news_list')
 
 
 
