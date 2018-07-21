@@ -171,6 +171,8 @@ def user_news_list():
 
 @user_blueprint.route('/user_news_edit',methods=['GET','POST'])
 def user_news_edit():
+    if not g.user.isMaster:
+        return redirect('/')
     if request.method=='GET':
         return render_template('/news/user_news_edit.html')
     title = request.form.get('title')
@@ -183,6 +185,8 @@ def user_news_edit():
     return redirect('/user/user_news_list')
 @user_blueprint.route('/user_news_release',methods=['GET','POST'])
 def user_news_release():
+    if not g.user.isMaster:
+        return redirect('/')
     if request.method=='GET':
         title = request.args.get('title')
         art = Article.query.filter_by(title = title).first()

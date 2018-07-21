@@ -1,24 +1,25 @@
 {%extends 'news/base.html'%}
 {%block head%}
-    <script type="text/javascript" src="/static/news/js/index.js"></script>
+        <script type="text/javascript" src="../../static/news/js/vue.min.js"></script>
+    <script type="text/javascript" src="../../static/news/js/index.js"></script>
 {%endblock%}
 {%block body%}
     <div class="conter_con">
         <ul class="list_con fl">
-            {% for i in article %}
-            <li>
+
+            <li v-for="art in art_list">
                 <a href="#" class="news_pic fl"><img src="../../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">{{ i.title }}</a>
-                <a href="#" class="news_detail fl">{{ i.content|truncate(50,False,'...') }}</a>
+                <a href="#" class="news_title fl">[[art.title]]</a>
+{#                <a href="#" class="news_detail fl">[[ i.content|truncate(50,False,'...') ]]</a>#}
                 <div class="author_info fl">
                     <div class="author fl">
-                        <img src="../../static/favicon.ico" alt="author">
+                        <img src="../../static/news/images/person01.png" alt="author">
                         <a href="#">李豪</a>
                     </div>
-                    <div class="time fl">{{ i.time }}</div>
+                    <div class="time fl">[[ art.time ]]</div>
                 </div>
             </li>
-            {% endfor %}
+
 
         </ul>
 
