@@ -8,8 +8,8 @@
         <ul class="list_con fl">
 
             <li v-for="art in art_list">
-                <a href="#" class="news_pic fl"><img src="../../static/news/images/news_pic.jpg"></a>
-                <a href="#" class="news_title fl">[[art.title]]</a>
+                <a :href="'/detail/'+art.id" class="news_pic fl"><img src="../../static/news/images/news_pic.jpg"></a>
+                <a :href="'/detail/'+art.id" class="news_title fl">[[art.title]]</a>
 {#                <a href="#" class="news_detail fl">[[ i.content|truncate(50,False,'...') ]]</a>#}
                 <div class="author_info fl">
                     <div class="author fl">

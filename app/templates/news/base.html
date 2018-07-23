@@ -23,11 +23,19 @@
             </div>
 
             <!-- 用户登录后显示下面，隐藏上面 -->
-            <div class="user_login fr"{%if g.user%} style="display:block"{%else%}style="display:none" {%endif%}>
+            {%if g.user%}
+            <div class="user_login fr" style="display:block" >
                 <img src="{{g.user.pic_url}}" class="lgin_pic">
                 <a href="/user" id="name" >{{g.user.name}}</a>
                 <a href="javascript:;" onclick="logout()">退出</a>
             </div>
+            {% else %}
+             <div class="user_login fr" style="display:none" >
+                <img src="" class="lgin_pic">
+                <a href="/user" id="name" ></a>
+                <a href="javascript:;" onclick="logout()">退出</a>
+            </div>
+            {% endif %}
 
         </div>
     </div>

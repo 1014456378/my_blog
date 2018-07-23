@@ -8,13 +8,43 @@ $(function(){
 
     // 收藏
     $(".collection").click(function () {
-
+        $.post('/collect',{
+            'flag':1,
+            'text_id':$('#text_id').val(),
+            'csrf_token':$('#csrf_token').val()
+        },function (data) {
+            if(data.result==1){
+                alert('请登陆')
+            }else if(data.result==2){
+                alert('请不要重复收藏')
+                $('.collection').hide();
+                $('.collected').show();
+            }else{
+                $('.collection').hide();
+                $('.collected').show();
+            }
+        })
        
     })
 
     // 取消收藏
     $(".collected").click(function () {
-
+        $.post('/collect',{
+                    'flag':2,
+                    'text_id':$('#text_id').val(),
+                    'csrf_token':$('#csrf_token').val()
+                },function (data) {
+                    if(data.result==1){
+                        alert('请登录')
+                    }else if(data.result==2){
+                        alert('未收藏')
+                        $('.collection').show();
+                        $('.collected').hide();
+                    }else{
+                        $('.collection').show();
+                        $('.collected').hide();
+                    }
+                })
      
     })
 

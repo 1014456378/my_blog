@@ -77,6 +77,7 @@ def login():
     if  not user:
         return jsonify(result = 1)
     check_result = user.check_pwd(pwd)
+    print(check_result)
     pic = user.pic
     name = user.name
     if check_result:

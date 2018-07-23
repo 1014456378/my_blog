@@ -109,7 +109,7 @@ $(function(){
         }
 
         // 发起登录请求
-        $.post('user/login',{
+        $.post('/user/login',{
             'email':mobile,
             'password':password,
             'csrf_token':$('#csrf_token').val()
@@ -125,6 +125,12 @@ $(function(){
                 $('.user_login').show();
                 $('.login.pic').attr('src','../../static/news/images/'+data.pic)
                 $('#name').html(data.name)
+                if(/^\/detail\/\d+$/.test(location.pathname)){
+                    $('.comment_form').show();
+                    $('.comment_form_logout').hide();
+                    $('.collection').show();
+                    $('.collected').hide();}
+
             }else{
                 alert('信息不能有空')
             }
@@ -161,7 +167,7 @@ $(function(){
             $("#register-password-err").show();
             return;
         }
-        $.post('user/register',{
+        $.post('/user/register',{
             'user_mail':mobile,
             'mail_code':smscode,
             'pwd':password,
@@ -206,11 +212,12 @@ function logout() {
                 location.href = '/';
             }
             else{
-                if(/^\/\d+$/.test(location.pathname)){
+                if(/^\/detail\/\d+$/.test(location.pathname)){
                     $('.comment_form').hide();
                     $('.comment_form_logout').show();
                     $('.collection').show();
-                    $('.collected').hide()
+                    $('.collected').hide();
+
                 }
             $('.user_btns').show();
             $('.user_login').hide();

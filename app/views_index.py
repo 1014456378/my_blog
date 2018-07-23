@@ -40,5 +40,4 @@ def art():
             'title':art_one.title,
             'time':art_one.time
         })
-    print(list1)
     return jsonify(list = list1,total_page=total_page)
