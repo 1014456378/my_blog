@@ -117,7 +117,7 @@ $(function(){
             if(data.result==1){
                 alert('用户名不存在')
             }else if(data.result==2){
-                alert('密码错误')
+                alert('密码或账号错误')
             }else if(data.result==0){
                 $('.login_form_con').hide();
                 $('.user_btns').hide();

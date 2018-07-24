@@ -5,6 +5,14 @@ function getCookie(name) {
 
 
 $(function(){
+    talk_list_vue = new Vue({
+        el:'.comment_list_con',
+        delimiters: ['[[', ']]'],
+        data:{
+            talk_list:[]
+        }
+    });
+
 
     // 收藏
     $(".collection").click(function () {
@@ -85,14 +93,15 @@ $(function(){
             alert('回复评论')
         }
     })
+    take_talk()
 
-        // 关注当前新闻作者
-    $(".focus").click(function () {
-
-    })
-
-    // 取消关注当前新闻作者
-    $(".focused").click(function () {
-
-    })
 })
+function take_talk() {
+    $.post('/talk',{
+        'text_id':$('#text_id').val(),
+        'csrf_token':$('#csrf_token').val()
+    },function (data) {
+        talk_list_vue.talk_list=data.talk_list;
+        $('.comment_count span').text(data.count)
+    });
+}

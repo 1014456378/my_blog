@@ -74,7 +74,7 @@ def login():
     if not all([email,pwd]):
         return jsonify(result = 3)
     user = User.query.filter_by(email = email).first()
-    if  not user:
+    if not user:
         return jsonify(result = 1)
     check_result = user.check_pwd(pwd)
     print(check_result)
@@ -161,6 +161,7 @@ def user_collection():
     return render_template('/news/user_collection.html',page=page,total_page=total_page,col_list = user_collection_list)
     
 @user_blueprint.route('/user_news_list')
+@yanzheng
 def user_news_list():
     page = int(request.args.get('page',1))
     art = Article.query.order_by(Article.time.desc())
@@ -171,6 +172,7 @@ def user_news_list():
     return render_template('/news/user_news_list.html',total_page=total_page,art_list=art_list,page=page)
 
 @user_blueprint.route('/user_news_edit',methods=['GET','POST'])
+@yanzheng
 def user_news_edit():
     if not g.user.isMaster:
         return redirect('/')
@@ -185,6 +187,7 @@ def user_news_edit():
     db.session.commit()
     return redirect('/user/user_news_list')
 @user_blueprint.route('/user_news_release',methods=['GET','POST'])
+@yanzheng
 def user_news_release():
     if not g.user.isMaster:
         return redirect('/')
