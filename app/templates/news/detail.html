@@ -66,7 +66,7 @@
                 <a href="javascript:;" class="comment_reply fr">回复</a>
                 <from class="reply_form fl">
                     <textarea  class="reply_input"></textarea>
-                    <input type="submit" name="" value="回复" class="reply_sub fr">
+                    <input type="submit" :name="talk.id" value="回复" class="reply_sub fr">
                     <input type="reset" name="" value="取消" class="reply_cancel fr">
                 </from>            
             </div>
@@ -79,7 +79,7 @@
             <div class="author_card">
                 <a href="#" class="author_pic"><img src="../../static/news/images/user_pic.png" alt="author_pic"></a>
                 <a href="#" class="author_name">李豪</a>
-                <div class="writings" style="margin-left: 30px"><span>总篇数</span><b>23</b></div>
+                <div class="writings" style="margin-left: 30px"><span>总篇数</span><b>{{ text_count }}</b></div>
             </div>
         </div>
     </div>

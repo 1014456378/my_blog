@@ -50,8 +50,7 @@ class Talk(db.Model,BaseModel):
     article_id = db.Column(db.Integer, db.ForeignKey("article.id"))
     #评论自关联一对多
     parent_id = db.Column(db.Integer, db.ForeignKey("talk.id"))
-    parent = db.relationship("Talk", remote_side=[id],
-                             backref=db.backref('childs'))
+    parent = db.relationship("Talk",lazy='dynamic')
 
 class Article(db.Model,BaseModel):
     id = db.Column(db.Integer, primary_key=True)

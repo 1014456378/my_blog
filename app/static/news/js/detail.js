@@ -59,7 +59,18 @@ $(function(){
         // 评论提交
     $(".comment_form").submit(function (e) {
         e.preventDefault();
-
+        $.post('/get_talk',{
+            'talk':$('.comment_input').val(),
+            'text_id':$('#text_id').val(),
+            'csrf_token':$('#csrf_token').val()
+        },function (data) {
+            if(data.result==1){
+                alert('评论不能为空')
+            }else{
+                take_talk()
+                $('.comment_input').val('')
+            }
+        })
     })
 
     $('.comment_list_con').delegate('a,input','click',function(){
@@ -76,21 +87,27 @@ $(function(){
             $(this).parent().toggle();
         }
 
-        if(sHandler.indexOf('comment_up')>=0)
-        {
-            var $this = $(this);
-            if(sHandler.indexOf('has_comment_up')>=0)
-            {
-                // 如果当前该评论已经是点赞状态，再次点击会进行到此代码块内，代表要取消点赞
-                $this.removeClass('has_comment_up')
-            }else {
-                $this.addClass('has_comment_up')
-            }
-        }
+
 
         if(sHandler.indexOf('reply_sub')>=0)
         {
-            alert('回复评论')
+            var msg=$(this).prev().val();
+            //清空内容
+            $(this).prev().val('');
+            //隐藏回复
+            $(this).parent().toggle();
+            $.post('/get_stalk', {
+                'talk': msg,
+                'talk_id': $(this).attr('name'),
+                'text_id': $('#text_id').val(),
+                'csrf_token': $('#csrf_token').val()
+            }, function (data) {
+               if(data.result==1){
+                   alert('评论不能为空')
+               }else{
+                    take_talk();
+                    $('.reply_input').val('')
+               }})
         }
     })
     take_talk()
