@@ -20,7 +20,8 @@ class User(db.Model,BaseModel):
     #用户密码hash码
     pwd_hash = db.Column(db.String(200))
     #用户头像
-    pic = db.Column(db.String(50),default='facicon.ico')
+    pic = db.Column(db.String(50),default='FqpDiGx81qkUNINriHHL9TqHADho')
+    isMaster = db.Column(db.Boolean,default=False)
     #用户评论关系
     talk = db.relationship('Talk', backref='whotalk', lazy='dynamic')
     #用户收藏关系
@@ -33,7 +34,9 @@ class User(db.Model,BaseModel):
         self.pwd_hash = generate_password_hash(pwd)
     def check_pwd(self, pwd):
         return check_password_hash(self.pwd_hash, pwd)
-
+    @property
+    def pic_url(self):
+        return 'http://oyvzbpqij.bkt.clouddn.com/' + self.pic
 
 
 class Talk(db.Model,BaseModel):
@@ -47,14 +50,13 @@ class Talk(db.Model,BaseModel):
     article_id = db.Column(db.Integer, db.ForeignKey("article.id"))
     #评论自关联一对多
     parent_id = db.Column(db.Integer, db.ForeignKey("talk.id"))
-    parent = db.relationship("Talk", remote_side=[id],
-                             backref=db.backref('childs'))
+    parent = db.relationship("Talk",lazy='dynamic')
 
 class Article(db.Model,BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now)
     title = db.Column(db.String(20))
-    content = db.Column(db.String(10000))
+    content = db.Column(db.TEXT)
     #文章评论关系
     talk = db.relationship('Talk',backref = 'article',lazy = 'dynamic')
 

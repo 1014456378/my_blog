@@ -109,7 +109,7 @@ $(function(){
         }
 
         // 发起登录请求
-        $.post('user/login',{
+        $.post('/user/login',{
             'email':mobile,
             'password':password,
             'csrf_token':$('#csrf_token').val()
@@ -117,7 +117,7 @@ $(function(){
             if(data.result==1){
                 alert('用户名不存在')
             }else if(data.result==2){
-                alert('密码错误')
+                alert('密码或账号错误')
             }else if(data.result==0){
                 $('.login_form_con').hide();
                 $('.user_btns').hide();
@@ -125,6 +125,12 @@ $(function(){
                 $('.user_login').show();
                 $('.login.pic').attr('src','../../static/news/images/'+data.pic)
                 $('#name').html(data.name)
+                if(/^\/detail\/\d+$/.test(location.pathname)){
+                    $('.comment_form').show();
+                    $('.comment_form_logout').hide();
+                    $('.collection').show();
+                    $('.collected').hide();}
+
             }else{
                 alert('信息不能有空')
             }
@@ -161,7 +167,7 @@ $(function(){
             $("#register-password-err").show();
             return;
         }
-        $.post('user/register',{
+        $.post('/user/register',{
             'user_mail':mobile,
             'mail_code':smscode,
             'pwd':password,
@@ -195,6 +201,30 @@ var imageCodeId = ""
 function generateImageCode() {
     $('.get_pic_code').attr('src',$('.get_pic_code').attr('src')+'1');
 }
+
+function logout() {
+    $.post('/logout',{
+        'csrf_token':$('#csrf_token').val()
+    },function (data) {
+        if(data.result==0){
+            // 如果当前在用户中心页面，转到主页
+            if (location.pathname=='/user/'){
+                location.href = '/';
+            }
+            else{
+                if(/^\/detail\/\d+$/.test(location.pathname)){
+                    $('.comment_form').hide();
+                    $('.comment_form_logout').show();
+                    $('.collection').show();
+                    $('.collected').hide();
+
+                }
+            $('.user_btns').show();
+            $('.user_login').hide();
+        }}
+    })
+}
+
 
 // 发送短信验证码
 function sendSMSCode() {

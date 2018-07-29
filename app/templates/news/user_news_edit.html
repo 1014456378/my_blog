@@ -8,14 +8,13 @@
     <script type="text/javascript" src="../../static/news/js/jquery-1.12.4.min.js"></script>
     <script src="../../static/news/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="../../static/news/js/tinymce_setup.js"></script>
-    <script type="text/javascript" src="../../static/news/js/user_news_release.js"></script>
+    <script type="text/javascript" src="../../static/news/js/user_news_edit.js"></script>
 </head>
 <body class="inframe_body">
-    <form class="release_form" href="/user/user_news_release" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="id" value="{{ art.id }}">
-        <h3>新闻发布</h3>
-        <div class="form-group"><label>新闻标题：</label><input type="text" class="input_txt2" name="title" value="{{ art.title }}"></div>
+    <form class="release_form" href="/user/user_news_edit" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+        <h3>文章发布</h3>
+        <div class="form-group"><label>文章标题：</label><input type="text" class="input_txt2" name="title"></div>
 {#        <div class="form-group">#}
 {#            <label>新闻分类：</label>#}
 {#            <select class="sel_opt">#}
@@ -28,19 +27,17 @@
 {#        <div class="form-group"><label>上传图片：</label><input type="file" class="input_file"></div>#}
         <div class="form-group">
             <label>内容：</label>
-            <div class="fl"><input class="input_area" id="rich_content" name="content" value="{{ art.content }}"></input></div>
+            <div class="fl"><input class="input_area" id="rich_content" name="content" value=""></input></div>
         </div>
         <div class="form-group">            
             <input type="submit" value="发 布" class="input_sub input_sub2">
         </div>
         <div class="error_tip2">错误提示</div>
     </form>
-    <script>
-        $(function(){
-            window.parent.fnSetIframeHeight(900);
-             var $li = $('.option_list li', window.parent.document);
-             $li.eq(4).addClass('active').siblings().removeClass('active');
-        })
-    </script>
+<script>
+    $(function(){
+        window.parent.fnSetIframeHeight(900);
+    })
+</script>
 </body>
 </html>
