@@ -4,8 +4,7 @@ from flask import render_template
 from flask import request
 from flask import session
 
-from app import models
-from app.models import db, User, Article
+from app.models import User, Article
 
 index_blueprint = Blueprint('index_b',__name__)
 

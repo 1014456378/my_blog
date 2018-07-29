@@ -12,19 +12,18 @@
             <h3>{{ text.title }}</h3>
             <div class="detail_about clearfix">
                 <span class="time_souce fl">{{ text.time }}</span>
-                <span class="comment fr">3</span>
             </div>
         {{ text.content|safe }}
         {% if not g.user %}
-         <a href="javascript:;" class="collection block-center">收藏</a>
+         <a href="javascript:;" class="collection block-center" style="display: block">收藏</a>
         <a href="javascript:;" class="collected block-center" style="display: none " ><span class="out" style="">已收藏</span><span class="over">取消收藏</span></a>
         {% else %}
           {% if text not in g.user.collect %}
-        <a href="javascript:;" class="collection block-center">收藏</a>
+        <a href="javascript:;" class="collection block-center" style="display: block">收藏</a>
         <a href="javascript:;" class="collected block-center" style="display: none " ><span class="out" style="">已收藏</span><span class="over">取消收藏</span></a>
         {% else %}
   <a href="javascript:;" class="collection block-center" style="display: none ">收藏</a>
-        <a href="javascript:;" class="collected block-center"  ><span class="out" style="">已收藏</span><span class="over">取消收藏</span></a>
+        <a href="javascript:;" class="collected block-center" style="display: block" ><span class="out" style="">已收藏</span><span class="over">取消收藏</span></a>
     {% endif %}
             {% endif %}
 

@@ -10,10 +10,11 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask_mail import Message, Mail
-from app import models
+
 from app.models import db, User, Article
 from app.utils import qiniu_upload
 from app.utils.captcha.captcha import captcha
+
 mail = Mail()
 user_blueprint = Blueprint('user_b',__name__,url_prefix='/user')
 
@@ -204,6 +205,17 @@ def user_news_release():
     art.time = datetime.now()
     db.session.commit()
     return redirect('/user/user_news_list')
+
+@user_blueprint.route('/delete',methods=['POST'])
+@yanzheng
+def delete():
+    text_id = request.form.get('id')
+    print(text_id)
+    text = Article.query.get(text_id)
+    db.session.delete(text)
+    db.session.commit()
+    return jsonify(result = 0)
+
 
 
 

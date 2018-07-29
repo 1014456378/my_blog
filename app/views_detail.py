@@ -1,10 +1,9 @@
-import datetime
-
 from flask import Blueprint, jsonify
 from flask import g
 from flask import render_template
 from flask import request
 from flask import session
+
 from app.models import User, Article, db, Talk
 
 detail_blueprint = Blueprint('detail_b',__name__)

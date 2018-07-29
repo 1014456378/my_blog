@@ -1112,7 +1112,7 @@ body{
 	position:relative;
 }
 
-.article_list li a{
+.article_list li #title{
 	line-height:50px;
 	width:450px;
 	overflow: hidden;
@@ -1125,11 +1125,11 @@ body{
 	text-indent:20px;
 }
 
-.article_list li a:hover{
+.article_list li #title:hover{
 	color:#39f;
 }
 
-.article_list li a:before{
+.article_list li #title:before{
 	content:"· ";
 	color:#1482f0;
 	font-size:40px;
@@ -1137,13 +1137,20 @@ body{
 	left:-17px;
 	top:-2px;
 }
-.article_list li span{
+.article_list li #time{
 	line-height:50px;
 	font-size:14px;
 	color:#999;
 	text-indent:20px;
 	float:right;
 	background:url(../images/clock.png) left center no-repeat;
+}
+.article_list li #delete{
+	line-height:50px;
+	font-size:14px;
+	color:#999;
+	text-indent:20px;
+	float:right;
 }
 
 .article_list li em{

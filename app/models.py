@@ -56,7 +56,7 @@ class Article(db.Model,BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime, default=datetime.now)
     title = db.Column(db.String(20))
-    content = db.Column(db.String(10000))
+    content = db.Column(db.TEXT)
     #文章评论关系
     talk = db.relationship('Talk',backref = 'article',lazy = 'dynamic')
 

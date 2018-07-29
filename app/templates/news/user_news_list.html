@@ -10,11 +10,12 @@
 	<script type="text/javascript" src="../../static/news/js/jquery.pagination.min.js"></script>
 </head>
 <body class="inframe_body">
+<input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
     <div class="news_list">
         <h3>新闻列表</h3>
         <ul class="article_list">
             {% for art in art_list %}
-            <li><a href="/user/user_news_release?title={{ art.title }}">{{ art.title }}</a><span>{{ art.time }}</span></li>
+            <li value="{{ art.id }}"><a id="title" href="/user/user_news_release?title={{ art.title }}">{{ art.title }}</a><a id="delete" href="javascript:; ">删除</a><span id="time">{{ art.time }}</span></li>
             {% endfor %}
         </ul>
         <div id="pagination" class="page"></div>
@@ -38,7 +39,19 @@
     $(function(){
         var $li = $('.option_list li', window.parent.document);
         $li.eq(5).addClass('active').siblings().removeClass('active');
+
+        $('#delete').click(function () {
+            $.post('/user/delete',{
+                'csrf_token':$('#csrf_token').val(),
+                'id':$('#delete').parent().attr('value')
+            },function (data) {
+                if(data.result==0){
+                    window.location.reload()
+                }
+            })
+        })
     })
+
 </script>
 </body>
 </html>
